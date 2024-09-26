@@ -11,7 +11,7 @@ import cors from "cors";
 dotenv.config({});
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "https://introduce-two.vercel.app/"],
   credentials: true,
 };
 const app = express();
