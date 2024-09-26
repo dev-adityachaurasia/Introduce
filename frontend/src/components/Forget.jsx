@@ -74,6 +74,7 @@ const Forget = () => {
           ...prev,
           username: user._id,
         }));
+        console.log(user);
         otpVerify(user.name, user.email, otp);
       } else {
         setErrors((prev) => ({
@@ -90,56 +91,56 @@ const Forget = () => {
       <div className="backdrop-blur-sm border border-solid bg-white p-8 pb-4  w-[70vw] md:w-[60vh] lg:w-[60vh] xl:w-[45vh] sm:w-[60vw]">
         {page === 0 && (
           <>
-              <div className="justify-center items-center flex flex-col gap-6">
-                <div className="text-center">
-                  <h2 className="text-xl font-bold text-black">
-                    Forget Password
-                  </h2>
-                </div>
-                <div className="justify-center w-full items-center flex flex-col gap-6">
-                  <label className="w-full relative justify-center flex">
-                    <input
-                      type="text"
-                      name="value"
-                      onChange={onChange}
-                      value={credential.value}
-                      className="w-full  border border-black p-3 rounded-lg "
-                    />
-                    <span
-                      className={`absolute top-3 left-3 transition-all duration-200 ${
-                        credential.value === "" ? "input-text" : "input-fill"
-                      }`}
-                    >
-                      Usename or Email
-                    </span>
-                  </label>
-                  {errors.username && (
-                    <p className="flex justify-center m-0 p-0 text-red-500 text-sm">
-                      {errors.username}
-                    </p>
-                  )}
-                  <button
-                    onClick={sendOTP}
-                    disabled={credential.value === "" ? true : false}
-                    className={`w-full border-none text-black py-3 rounded-lg transition duration-300 ${
-                      credential.value === "" ? "bg-[#78A8EB]" : "bg-blue-600"
+            <div className="justify-center items-center flex flex-col gap-6">
+              <div className="text-center">
+                <h2 className="text-xl font-bold text-black">
+                  Forget Password
+                </h2>
+              </div>
+              <div className="justify-center w-full items-center flex flex-col gap-6">
+                <label className="w-full relative justify-center flex">
+                  <input
+                    type="text"
+                    name="value"
+                    onChange={onChange}
+                    value={credential.value}
+                    className="w-full  border border-black p-3 rounded-lg "
+                  />
+                  <span
+                    className={`absolute top-3 left-3 transition-all duration-200 ${
+                      credential.value === "" ? "input-text" : "input-fill"
                     }`}
                   >
-                    Continue
-                  </button>
-                </div>
-                <div className="text-center">
-                  <p className="text-black pt-2">
-                    If you remenber the password ?{" "}
-                    <NavLink
-                      to="/"
-                      className="text-yellow-600 hover:underline  no-underline"
-                    >
-                      Login
-                    </NavLink>
+                    Usename or Email
+                  </span>
+                </label>
+                {errors.username && (
+                  <p className="flex justify-center m-0 p-0 text-red-500 text-sm">
+                    {errors.username}
                   </p>
-                </div>
+                )}
+                <button
+                  onClick={sendOTP}
+                  disabled={credential.value === "" ? true : false}
+                  className={`w-full border-none text-black py-3 rounded-lg transition duration-300 ${
+                    credential.value === "" ? "bg-[#78A8EB]" : "bg-blue-600"
+                  }`}
+                >
+                  Continue
+                </button>
               </div>
+              <div className="text-center">
+                <p className="text-black pt-2">
+                  If you remenber the password ?{" "}
+                  <NavLink
+                    to="/"
+                    className="text-yellow-600 hover:underline  no-underline"
+                  >
+                    Login
+                  </NavLink>
+                </p>
+              </div>
+            </div>
           </>
         )}
         {page === 1 && (

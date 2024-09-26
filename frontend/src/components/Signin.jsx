@@ -8,7 +8,7 @@ import { collegeList, district, year } from "../../messed/collegeList.js";
 import OptionNull from "./ui/OptionNull.jsx";
 
 const Signin = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [hover, setHover] = useState({
     email: false,
     username: false,

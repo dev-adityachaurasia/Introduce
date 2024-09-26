@@ -1,11 +1,8 @@
 import SibApiV3Sdk from "sib-api-v3-sdk";
-import dotenv from "dotenv";
-
-dotenv.config({});
 
 let defaultClient = SibApiV3Sdk.ApiClient.instance;
 let apiKey = defaultClient.authentications["api-key"];
-apiKey.apiKey = process.env.EMAIL_KEY; // Replace with your Brevo API key
+apiKey.apiKey = import.meta.env.VITE_EMAIL_KEY; // Replace with your Brevo API key
 
 const otpVerify = (name, email, OTP) => {
   // Define the transactional email API instance
@@ -30,12 +27,13 @@ const otpVerify = (name, email, OTP) => {
   // Send the email
   apiInstance.sendTransacEmail(sendSmtpEmail).then(
     function (data) {
+      console.log("Email sent successfully:", data);
       return true;
     },
     function (error) {
+      console.log(error);
       return false;
     }
   );
 };
-
 export default otpVerify;

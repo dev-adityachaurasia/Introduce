@@ -3,8 +3,9 @@ import Login from "./components/Login";
 import Signin from "./components/Signin";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import React from "react";
 
-function App() {
+const App = () => {
   const router = createBrowserRouter([
     { path: "/", element: <Login /> },
     { path: "/signup", element: <Signin /> },
@@ -15,6 +16,6 @@ function App() {
       <RouterProvider router={router} />
     </>
   );
-}
+};
 
 export default App;
