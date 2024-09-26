@@ -1,7 +1,4 @@
 import SibApiV3Sdk from "sib-api-v3-sdk";
-import dotenv from "dotenv";
-
-dotenv.config({});
 
 let defaultClient = SibApiV3Sdk.ApiClient.instance;
 let apiKey = defaultClient.authentications["api-key"];
