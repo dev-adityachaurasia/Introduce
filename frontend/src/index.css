@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+input:focus ~ .input-text {
+  @apply text-blue-900 -top-2 left-1 text-xs bg-white;
+}
+.input-fill {
+  @apply text-blue-900 -top-2 left-1 text-xs bg-white;
+}

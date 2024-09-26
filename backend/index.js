@@ -1,0 +1,32 @@
+import express from "express";
+import postRouter from "./routes/post.routes.js";
+import cookieParser from "cookie-parser";
+import connectDB from "./utils/db.js";
+import userRouter from "./routes/user.routes.js";
+import adminRouter from "./routes/admin.routes.js";
+import messageRouter from "./routes/message.routes.js";
+import dotenv from "dotenv";
+import cors from "cors";
+
+dotenv.config({});
+
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+};
+const app = express();
+
+app.use(cors(corsOptions));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(express.json());
+
+app.use("/", postRouter);
+app.use("/", userRouter);
+app.use("/", adminRouter);
+app.use("/", messageRouter);
+
+app.listen(process.env.PORT || 8000, () => {
+  connectDB();
+  console.log(`Server is running on port ${process.env.PORT}`);
+});
