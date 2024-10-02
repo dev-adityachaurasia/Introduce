@@ -17,7 +17,7 @@ import isAuthantication from "../middlewares/isAuthinticated.js";
 const router = express.Router();
 
 router.route("/post").post(isAuthantication, upload.single("post"), newPost);
-router.route("/allpost").post(isAuthantication, getAllPost);
+router.route("/allpost").post(getAllPost);
 router.route("/:username/post").get(getUserPost);
 router.route("/editpost/:postid").post(isAuthantication, editPost);
 router.route("/like/:postid").get(isAuthantication, likePost);

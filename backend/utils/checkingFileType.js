@@ -6,6 +6,7 @@ import datauri from "./datauri.js";
 // Function to determine if a file is an image or video
 const checkFileType = async (post) => {
   try {
+    console.log(post)
     // Get the file extension
     const extname = path.extname(post.originalname).toLowerCase();
 

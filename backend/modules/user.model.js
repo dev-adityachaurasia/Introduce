@@ -12,7 +12,6 @@ const userSchema = new mongooose.Schema(
     college: { type: String, required: true },
     profilePic: { type: String, default: "" },
     year: { type: String, required: true },
-    phone: { type: Number },
     posts: [{ type: mongooose.Schema.ObjectId, ref: "User" }],
     saved: [{ type: mongooose.Schema.ObjectId, ref: "User" }],
     member: [{ type: mongooose.Schema.ObjectId, ref: "Post" }],

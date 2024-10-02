@@ -133,7 +133,7 @@ const Forget = () => {
                 <p className="text-black pt-2">
                   If you remenber the password ?{" "}
                   <NavLink
-                    to="/"
+                    to="/login"
                     className="text-yellow-600 hover:underline  no-underline"
                   >
                     Login

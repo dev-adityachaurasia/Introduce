@@ -4,10 +4,12 @@ import Signin from "./components/Signin";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import React from "react";
+import Home from "./components/Home";
 
 const App = () => {
   const router = createBrowserRouter([
-    { path: "/", element: <Login /> },
+    { path: "/", element: <Home /> },
+    { path: "/login", element: <Login /> },
     { path: "/signup", element: <Signin /> },
     { path: "/forget", element: <Forget /> },
   ]);

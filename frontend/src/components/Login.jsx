@@ -1,13 +1,16 @@
 import { useState } from "react";
 import google from "../assets/google.png";
-import axios from "axios";
+import axios from "../utils/axios.jsx";
+import toast, { Toaster } from "react-hot-toast";
 import { NavLink } from "react-router-dom";
+
 const Login = () => {
   const [loginCredencial, setloginCredencial] = useState({
     value: "",
     password: "",
   });
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Added state to track password visibility
   const onChange = (e) => {
     setError("");
     setloginCredencial((prev) => ({
@@ -15,27 +18,29 @@ const Login = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
   const loginHandler = async (e) => {
     e.preventDefault();
     // Call the API to check credentials
     try {
-      let res = await axios.post(
-        "http://localhost:8000/login",
-        loginCredencial,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-      console.log(res.data);
+      let res = await axios.post("/login", loginCredencial, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        let notify = () => toast(res.data.message);
+        notify();
+        navigate("/");
+      }
     } catch (err) {
       if (err.status === 401) {
         setError("Invalid credentials");
       }
     }
   };
+
   return (
     <>
       <div className="flex items-center flex-col justify-center h-screen bg-cente">
@@ -58,12 +63,12 @@ const Login = () => {
                     loginCredencial.value === "" ? "input-text" : "input-fill"
                   }`}
                 >
-                  Usename or Email
+                  Username or Email
                 </span>
               </label>
               <label className="w-full relative justify-center flex text-gray-400">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"} // Toggle between text and password based on showPassword
                   name="password"
                   value={loginCredencial.password}
                   onChange={onChange}
@@ -78,6 +83,14 @@ const Login = () => {
                 >
                   Password
                 </span>
+                {/* Show/Hide Password Toggle Button */}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)} // Toggle the showPassword state
+                  className="absolute right-3 top-3 text-sm text-gray-600"
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
               </label>
               {/* Login Button */}
               <button
@@ -115,7 +128,7 @@ const Login = () => {
               {/* Forgot Password Link */}
               <div className="text-center">
                 <NavLink
-                  to="forget"
+                  to="/forget"
                   className="text-yellow-600 hover:underline no-underline"
                 >
                   Forgot password?
@@ -139,6 +152,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <Toaster className="font-bold" />
     </>
   );
 };

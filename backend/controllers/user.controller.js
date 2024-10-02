@@ -86,12 +86,19 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = (_, res) => {
+export const logout = (req, res) => {
   try {
-    return res.clearCookie("token").json({
-      message: "Logout Succesfully",
-      success: true,
-    });
+    console.log(req.Cookies);
+    return res
+      .cookie("token", "", {
+        httpOnly: true,
+        sameSit: "strict",
+        maxAge: 0,
+      })
+      .json({
+        message: "Logout Succesfully",
+        success: true,
+      });
   } catch (error) {
     console.log(error);
   }

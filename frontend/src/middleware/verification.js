@@ -5,6 +5,7 @@ let apiKey = defaultClient.authentications["api-key"];
 apiKey.apiKey = import.meta.env.VITE_EMAIL_KEY; // Replace with your Brevo API key
 
 const otpVerify = (name, email, OTP) => {
+  console.log(name, email, OTP);
   // Define the transactional email API instance
   let apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
   // Define your email data

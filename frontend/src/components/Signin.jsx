@@ -1,14 +1,15 @@
-import axios from "axios";
+import axios from "../utils/axios.jsx";
 import { useState } from "react";
 import Tick from "./ui/Tick.jsx";
 import cross from "../assets/x-mark.png";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import otpVerify from "../middleware/verification.js";
-import { collegeList, district, year } from "../../messed/collegeList.js";
+import { collegeList, districts, year } from "../data/collegeList.js";
 import OptionNull from "./ui/OptionNull.jsx";
 
 const Signin = () => {
   const [page, setPage] = useState(0);
+  const [showPassword, setShowPassword] = useState(false); // Added state to track password visibility
   const [hover, setHover] = useState({
     email: false,
     username: false,
@@ -30,6 +31,7 @@ const Signin = () => {
   const [errors, setErrors] = useState({
     username: "",
     email: "",
+    otp: "",
     password: "",
     branch: "",
     college: "",
@@ -82,18 +84,17 @@ const Signin = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (genOtp.toString() === OTP) {
-      let res = await axios.post(
-        "http://localhost:8000/register",
-        credentials,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-      if (res.data) console.log(res.data.message);
-      else console.log(res.message);
+      let res = await axios.post("/register", credentials, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (res.data) {
+        console.log(res.data.message);
+      } else {
+        console.log(res.message);
+      }
     } else {
       setErrors((prev) => ({
         ...prev,
@@ -123,7 +124,7 @@ const Signin = () => {
     }
   };
   const validation = async (value) => {
-    const search = await axios.post("http://localhost:8000/check-username", {
+    const search = await axios.post("/check-username", {
       value: value,
     });
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -255,7 +256,7 @@ const Signin = () => {
                   {errors.name && credentials.name ? (
                     <>
                       <img
-                        className={`absolute bg-red-400 rounded-lg flex justify-center items-center right-2  top-2`}
+                        className={`absolute bg-red-400 rounded-lg flex justify-center items-center right-2  top-3`}
                         width="15px"
                         src={`${cross}`}
                         alt=""
@@ -301,7 +302,7 @@ const Signin = () => {
                   {errors.username && credentials.username ? (
                     <>
                       <img
-                        className={`absolute bg-red-400 rounded-lg flex justify-center items-center right-2  top-2`}
+                        className={`absolute bg-red-400 rounded-lg flex justify-center items-center right-2  top-3`}
                         width="15px"
                         src={`${cross}`}
                         alt=""
@@ -346,7 +347,7 @@ const Signin = () => {
                   {errors.email && credentials.email ? (
                     <>
                       <img
-                        className={`absolute bg-red-400 rounded-lg flex justify-center items-center right-2  top-2`}
+                        className={`absolute bg-red-400 rounded-lg flex justify-center items-center right-2  top-3`}
                         width="15px"
                         src={`${cross}`}
                         alt=""
@@ -375,7 +376,7 @@ const Signin = () => {
                 </label>
                 <label className="w-full relative justify-center flex text-gray-400">
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"} // Toggle between text and password based on showPassword
                     name="password"
                     value={credentials.password}
                     onChange={onChange}
@@ -388,6 +389,18 @@ const Signin = () => {
                   >
                     Set Password
                   </span>
+                  {/* Show/Hide Password Toggle Button */}
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)} // Toggle the showPassword state
+                    className="absolute font-bold right-3 top-3 text-sm text-gray-600"
+                  >
+                    {credentials.password === ""
+                      ? ""
+                      : showPassword
+                      ? "Hide"
+                      : "Show"}
+                  </button>
                 </label>
                 <button
                   onClick={nextHandle}
@@ -420,7 +433,7 @@ const Signin = () => {
                   <p className="text-black ">
                     Already have an account ?{" "}
                     <NavLink
-                      to="/"
+                      to="/login"
                       className="text-yellow-600 hover:underline no-underline"
                     >
                       Login
@@ -442,10 +455,10 @@ const Signin = () => {
                     name="district"
                     value={credentials.district}
                     onChange={onChange}
-                    className="w-full  border border-black p-2 rounded-lg "
+                    className="w-full  border text-black border-black p-2 rounded-lg "
                   >
                     <OptionNull value="Select Your District"></OptionNull>
-                    {district.map((value, i) => (
+                    {districts.map((value, i) => (
                       <option key={i} value={value}>
                         {value}
                       </option>
@@ -467,7 +480,7 @@ const Signin = () => {
                     name="college"
                     value={credentials.college}
                     onChange={onChange}
-                    className="w-full border border-black p-2 rounded-lg "
+                    className="w-full border text-black border-black p-2 rounded-lg "
                   >
                     <OptionNull value="Select Your College"></OptionNull>
                     {collegeList.map((value, i) =>
@@ -496,13 +509,12 @@ const Signin = () => {
                     name="branch"
                     value={credentials.branch}
                     onChange={onChange}
-                    className="w-full  border border-black p-2 rounded-lg "
+                    className="w-full text-black border border-black p-2 rounded-lg "
                   >
                     <OptionNull value="Select Your Branch"></OptionNull>
                     {collegeList.map((value, i) =>
-                      value.district === credentials.district &&
                       value.college === credentials.college
-                        ? value.branch.map((value, i) => (
+                        ? value.branches.map((value, i) => (
                             <option key={i} value={value}>
                               {value}
                             </option>
@@ -526,7 +538,7 @@ const Signin = () => {
                     name="year"
                     value={credentials.year}
                     onChange={onChange}
-                    className="w-full  border border-black p-2 rounded-lg "
+                    className="w-full text-black border border-black p-2 rounded-lg "
                   >
                     <OptionNull value="Select Your Current Year"></OptionNull>
                     {year.map((value, i) => (
@@ -574,11 +586,17 @@ const Signin = () => {
                     type="number"
                     name="OTP"
                     value={OTP}
-                    onChange={(e) => setOTP(e.target.value)}
-                    className="w-full  border border-black p-2 rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    onChange={(e) => {
+                      setOTP(e.target.value);
+                      setErrors((e) => ({
+                        ...e,
+                        otp: "",
+                      }));
+                    }}
+                    className="w-full text-black border border-black p-2 rounded-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                   <span
-                    className={`absolute  top-2 left-3 transition-all duration-200 ${
+                    className={`absolute top-2 left-3 transition-all duration-200 ${
                       OTP === "" ? "input-text" : "input-fill"
                     } `}
                   >
@@ -597,6 +615,11 @@ const Signin = () => {
                     </a>
                   </p>
                 </div>
+                {errors.otp && (
+                  <p className="flex justify-center text-red-500 text-sm">
+                    {errors.otp}
+                  </p>
+                )}
                 <button
                   disabled={
                     OTP === null ||
@@ -616,11 +639,6 @@ const Signin = () => {
                 >
                   Next
                 </button>
-                {errors.otp && (
-                  <p className="flex justify-center text-red-500 text-sm">
-                    {errors.otp}
-                  </p>
-                )}
               </>
             )}
           </form>

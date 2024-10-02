@@ -1,12 +1,12 @@
+import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
-import postRouter from "./routes/post.routes.js";
-import cookieParser from "cookie-parser";
 import connectDB from "./utils/db.js";
+import cookieParser from "cookie-parser";
+import postRouter from "./routes/post.routes.js";
 import userRouter from "./routes/user.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 import messageRouter from "./routes/message.routes.js";
-import dotenv from "dotenv";
-import cors from "cors";
 
 dotenv.config({});
 
